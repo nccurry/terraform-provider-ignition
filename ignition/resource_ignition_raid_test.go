@@ -35,7 +35,7 @@ func TestIgnitionRaid(t *testing.T) {
 		}
 
 		if *a.Level != "raid10" {
-			return fmt.Errorf("level, found %q", a.Level)
+			return fmt.Errorf("level, found %q", *a.Level)
 		}
 
 		if *a.Spares != 42 {

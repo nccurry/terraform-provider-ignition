@@ -7,8 +7,8 @@ import (
 	"testing"
 
 	"github.com/coreos/ignition/v2/config/v3_3/types"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/resource"
-	"github.com/hashicorp/terraform-plugin-sdk/terraform"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 )
 
 func TestIgnitionFileReplace(t *testing.T) {
@@ -125,7 +125,7 @@ func TestIgnitionFileMergeNoVerification(t *testing.T) {
 func TestIgnitionConfigDisks(t *testing.T) {
 	testIgnition(t, `
 	variable "ignition_disk_renders" {
-		type = "list"
+		type = list(string)
 		default = [""]
 	}
 
@@ -153,7 +153,7 @@ func TestIgnitionConfigDisks(t *testing.T) {
 func TestIgnitionConfigArrays(t *testing.T) {
 	testIgnition(t, `
 	variable "ignition_array_renders" {
-		type = "list"
+		type = list(string)
 		default = [""]
 	}
 
@@ -182,7 +182,7 @@ func TestIgnitionConfigArrays(t *testing.T) {
 func TestIgnitionConfigFilesystems(t *testing.T) {
 	testIgnition(t, `
 	variable "ignition_filesystem_renders" {
-		type = "list"
+		type = list(string)
 		default = [""]
 	}
 
@@ -210,7 +210,7 @@ func TestIgnitionConfigFilesystems(t *testing.T) {
 func TestIgnitionConfigFiles(t *testing.T) {
 	testIgnition(t, `
 	variable "ignition_file_renders" {
-		type = "list"
+		type = list(string)
 		default = [""]
 	}
 
@@ -239,7 +239,7 @@ func TestIgnitionConfigFiles(t *testing.T) {
 func TestIgnitionConfigSystemd(t *testing.T) {
 	testIgnition(t, `
 	variable "ignition_systemd_renders" {
-		type = "list"
+		type = list(string)
 		default = [""]
 	}
 
@@ -266,7 +266,7 @@ func TestIgnitionConfigSystemd(t *testing.T) {
 func TestIgnitionConfigUsers(t *testing.T) {
 	testIgnition(t, `
 	variable "ignition_user_renders" {
-		type = "list"
+		type = list(string)
 		default = [""]
 	}
 
@@ -294,7 +294,7 @@ func TestIgnitionConfigUsers(t *testing.T) {
 func TestIgnitionConfigGroups(t *testing.T) {
 	testIgnition(t, `
 	variable "ignition_group_renders" {
-		type = "list"
+		type = list(string)
 		default = [""]
 	}
 

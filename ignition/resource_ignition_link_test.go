@@ -45,7 +45,7 @@ func TestIgnitionLink(t *testing.T) {
 		}
 
 		if *f.Target != "/bar" {
-			return fmt.Errorf("target, found %q", f.Target)
+			return fmt.Errorf("target, found %q", *f.Target)
 		}
 
 		if *f.Hard != true {
@@ -66,7 +66,7 @@ func TestIgnitionLink(t *testing.T) {
 		}
 
 		if *f.Target != "/qux" {
-			return fmt.Errorf("target, found %q", f.Target)
+			return fmt.Errorf("target, found %q", *f.Target)
 		}
 
 		if *f.Overwrite != true {
