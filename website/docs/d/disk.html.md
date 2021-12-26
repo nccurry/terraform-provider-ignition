@@ -28,16 +28,16 @@ The following arguments are supported:
 
 * `device` - (Required) The absolute path to the device. Devices are typically referenced by the _/dev/disk/by-*_ symlinks.
 
-* `wipe_table` - (Optional) Whether or not the partition tables shall be wiped. When true, the partition tables are erased before any further manipulation. Otherwise, the existing entries are left intact.
+* `wipe_table` - (Optional) Whether the partition tables shall be wiped. When true, the partition tables are erased before any further manipulation. Otherwise, the existing entries are left intact.
 
-* `partition` - (Optional) The list of partitions and their configuration for this particular disk..
+* `partition` - (Optional) The list of partitions and their configuration for this particular disk.
 
 
 The `partition` block supports:
  
 * `label` - (Optional) The PARTLABEL for the partition.
 
-* `number` - (Optional) The partition number, which dictates it’s position in the partition table (one-indexed). If zero, use the next available partition slot.
+* `number` - (Optional) The partition number, which dictates its position in the partition table (one-indexed). If zero, use the next available partition slot.
 
 * `size` - (Optional) The size of the partition (in sectors). If zero, the partition will fill the remainder of the disk.
 

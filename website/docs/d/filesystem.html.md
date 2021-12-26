@@ -8,7 +8,7 @@ description: |-
 
 # ignition\_filesystem
 
-Describes the desired state of a the system’s filesystems to be configured and/or used with the _ignition\_file_ resource.
+Describes the desired state of the system’s filesystems to be configured and/or used with the _ignition\_file_ resource.
 
 ## Example Usage
 
@@ -28,7 +28,7 @@ data "ignition_filesystem" "foo" {
 
 The following arguments are supported:
 
-* `name` - (Optional) The identifier for the filesystem, internal to Ignition. This is only required if the filesystem needs to be referenced in the a _ignition\_files_ resource.
+* `name` - (Optional) The identifier for the filesystem, internal to Ignition. This is only required if the filesystem needs to be referenced in the _ignition\_files_ resource.
 
 * `mount` - (Optional) Contains the set of mount and formatting options for the filesystem. A non-null entry indicates that the filesystem should be mounted before it is used by Ignition.
 
@@ -41,7 +41,7 @@ The `mount` block supports:
 
 * `format` - (Required) The filesystem format (ext4, btrfs, xfs, vfat, or swap).
 
-* `wipe_filesystem` - (Optional)  Whether or not to wipe the device before filesystem creation.
+* `wipe_filesystem` - (Optional)  Whether to wipe the device before filesystem creation.
 
 * `label` - (Optional) The label of the filesystem.
 

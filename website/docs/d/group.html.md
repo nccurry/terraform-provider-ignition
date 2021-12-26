@@ -22,7 +22,7 @@ data "ignition_group" "foo" {
 
 The following arguments are supported:
 
-* `name` - (Required) The groupname for the account.
+* `name` - (Required) The group name for the account.
 
 * `password_hash` - (Optional) The encrypted password for the account.
 

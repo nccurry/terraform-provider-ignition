@@ -25,9 +25,9 @@ The following arguments are supported:
 
 * `name` - (Required) The name of the unit. This must be suffixed with a valid unit type (e.g. _thing.service_).
 
-* `enabled` - (Optional) Whether or not the service shall be enabled. When true, the service is enabled. In order for this to have any effect, the unit must have an install section. (default true)
+* `enabled` - (Optional) Whether the service shall be enabled. When true, the service is enabled. In order for this to have any effect, the unit must have an install section. (default true)
 
-* `mask` - (Optional) Whether or not the service shall be masked. When true, the service is masked by symlinking it to _/dev/null_.
+* `mask` - (Optional) Whether the service shall be masked. When true, the service is masked by symlinking it to _/dev/null_.
 
 * `content` - (Optional) The contents of the unit.
 

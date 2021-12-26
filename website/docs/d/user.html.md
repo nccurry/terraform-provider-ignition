@@ -36,19 +36,19 @@ The following arguments are supported:
 
 * `home_dir` - (Optional) The home directory of the new account.
 
-* `no_create_home` - (Optional) Whether or not to create the user’s home directory.
+* `no_create_home` - (Optional) Whether to create the user’s home directory.
 
 * `primary_group` - (Optional) The name or ID of the primary group of the new account.
 
 * `groups` - (Optional) The list of supplementary groups of the new account.
 
-* `no_user_group` - (Optional) Whether or not to create a group with the same name as the user.
+* `no_user_group` - (Optional) Whether to create a group with the same name as the user.
 
-* `no_log_init` - (Optional) Whether or not to add the user to the lastlog and faillog databases.
+* `no_log_init` - (Optional) Whether to add the user to the lastlog and faillog databases.
 
 * `shell` - (Optional) The login shell of the new account.
 
-* `system` - (Optional) Whether or not to make the account a system account. This only has an effect if the account doesn't exist yet.
+* `system` - (Optional) Whether to make the account a system account. This only has an effect if the account doesn't exist yet.
 
 ## Attributes Reference
 
