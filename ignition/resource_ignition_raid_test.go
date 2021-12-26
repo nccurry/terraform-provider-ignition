@@ -5,7 +5,7 @@ import (
 	"regexp"
 	"testing"
 
-	"github.com/coreos/ignition/v2/config/v3_1/types"
+	"github.com/coreos/ignition/v2/config/v3_3/types"
 )
 
 func TestIgnitionRaid(t *testing.T) {
@@ -34,7 +34,7 @@ func TestIgnitionRaid(t *testing.T) {
 			return fmt.Errorf("devices, found %v", a.Devices)
 		}
 
-		if a.Level != "raid10" {
+		if *a.Level != "raid10" {
 			return fmt.Errorf("level, found %q", a.Level)
 		}
 
