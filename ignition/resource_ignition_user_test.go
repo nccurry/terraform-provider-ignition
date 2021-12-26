@@ -37,7 +37,7 @@ func TestIgnitionUser(t *testing.T) {
 		}
 	`, func(c *types.Config) error {
 		if len(c.Passwd.Users) != 2 {
-			return fmt.Errorf("Lenght of field Users didn't match. Expected: %d, Given: %d", 2, len(c.Passwd.Users))
+			return fmt.Errorf("Length of field Users didn't match. Expected: %d, Given: %d", 2, len(c.Passwd.Users))
 		}
 
 		u := c.Passwd.Users[0]
@@ -51,7 +51,7 @@ func TestIgnitionUser(t *testing.T) {
 		}
 
 		if len(u.SSHAuthorizedKeys) != 1 {
-			return fmt.Errorf("Lenght of field SSHAuthorizedKeys didn't match. Expected: %d, Given: %d", 1, len(u.SSHAuthorizedKeys))
+			return fmt.Errorf("Length of field SSHAuthorizedKeys didn't match. Expected: %d, Given: %d", 1, len(u.SSHAuthorizedKeys))
 		}
 
 		if u.SSHAuthorizedKeys[0] != "keys" {
@@ -79,7 +79,7 @@ func TestIgnitionUser(t *testing.T) {
 		}
 
 		if len(u.Groups) != 1 {
-			return fmt.Errorf("Lenght of field Groups didn't match. Expected: %d, Given: %d", 1, len(u.Groups))
+			return fmt.Errorf("Length of field Groups didn't match. Expected: %d, Given: %d", 1, len(u.Groups))
 		}
 
 		if u.Groups[0] != "group" {
