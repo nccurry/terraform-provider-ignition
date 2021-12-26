@@ -192,6 +192,6 @@ func buildFile(d *schema.ResourceData) (string, error) {
 }
 
 func encodeDataURL(mime, content string) string {
-	base64 := base64.StdEncoding.EncodeToString([]byte(content))
-	return fmt.Sprintf("data:%s;charset=utf-8;base64,%s", mime, base64)
+	base64String := base64.StdEncoding.EncodeToString([]byte(content))
+	return fmt.Sprintf("data:%s;charset=utf-8;base64,%s", mime, base64String)
 }
