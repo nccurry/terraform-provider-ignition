@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 
 	"github.com/coreos/ignition/v2/config/v3_3/types"
-	vcontext_path "github.com/coreos/vcontext/path"
+	vContextPath "github.com/coreos/vcontext/path"
 	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
 )
 
@@ -124,7 +124,7 @@ func buildFilesystem(d *schema.ResourceData) (string, error) {
 		return "", err
 	}
 
-	return hash(string(b)), handleReport(fs.Validate(vcontext_path.ContextPath{}))
+	return hash(string(b)), handleReport(fs.Validate(vContextPath.ContextPath{}))
 }
 
 func castSliceInterfaceToMountOption(i []interface{}) []types.FilesystemOption {
