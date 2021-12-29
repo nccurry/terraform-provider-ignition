@@ -17,6 +17,7 @@ func TestIgnitionFileReplace(t *testing.T) {
 			replace {
 				source = "foo"
 				verification = "sha512-0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+				compression = "gzip"
 			}
 		}
 	`, func(c *types.Config) error {
@@ -33,6 +34,10 @@ func TestIgnitionFileReplace(t *testing.T) {
 			return fmt.Errorf("config.replace.verification, found %q", *r.Verification.Hash)
 		}
 
+		if *r.Compression != "gzip" {
+			return fmt.Errorf("config.replace.Compression, found %q", *r.Compression)
+		}
+
 		return nil
 	})
 }
@@ -43,11 +48,12 @@ func TestIgnitionFileMerge(t *testing.T) {
 			merge {
 				source = "foo"
 				verification = "sha512-0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+				compression = "gzip"
 			}
 
 		    merge {
-		    	source = "foo"
-		    	verification = "sha512-0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+		    	source = "bar"
+		    	verification = "sha512-1123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
 			}
 		}
 	`, func(c *types.Config) error {
@@ -62,6 +68,52 @@ func TestIgnitionFileMerge(t *testing.T) {
 
 		if *a[0].Verification.Hash != "sha512-0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef" {
 			return fmt.Errorf("config.replace.verification, found %q", *a[0].Verification.Hash)
+		}
+
+		if *a[0].Compression != "gzip" {
+			return fmt.Errorf("config.replace.verification, found %q", *a[0].Compression)
+		}
+
+		if string(*a[1].Source) != "bar" {
+			return fmt.Errorf("config.replace.source, found %q", *a[1].Source)
+		}
+
+		if *a[1].Verification.Hash != "sha512-1123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef" {
+			return fmt.Errorf("config.replace.verification, found %q", *a[1].Verification.Hash)
+		}
+
+		if a[1].Compression != nil {
+			return fmt.Errorf("compression should be nil, found %q", *a[1].Compression)
+		}
+
+		return nil
+	})
+}
+
+func TestIgnitionFileReplaceNoCompression(t *testing.T) {
+	testIgnition(t, `
+		data "ignition_config" "test" {
+			replace {
+				source = "foo"
+				verification = "sha512-0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+			}
+		}
+	`, func(c *types.Config) error {
+		r := c.Ignition.Config.Replace
+		if &r == nil {
+			return fmt.Errorf("unable to find replace config")
+		}
+
+		if *r.Source != "foo" {
+			return fmt.Errorf("config.replace.source, found %q", *r.Source)
+		}
+
+		if *r.Verification.Hash != "sha512-0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef" {
+			return fmt.Errorf("config.replace.verification, found %q", *r.Verification.Hash)
+		}
+
+		if r.Compression != nil {
+			return fmt.Errorf("compression should be nil, found %q", *r.Compression)
 		}
 
 		return nil
@@ -87,6 +139,10 @@ func TestIgnitionFileReplaceNoVerification(t *testing.T) {
 
 		if r.Verification.Hash != nil {
 			return fmt.Errorf("verification hash should be nil")
+		}
+
+		if r.Compression != nil {
+			return fmt.Errorf("compression should be nil, found %q", *r.Compression)
 		}
 
 		return nil

@@ -18,6 +18,11 @@ var configReferenceResource = &schema.Resource{
 			ForceNew: true,
 			Required: true,
 		},
+		"compression": {
+			Type:     schema.TypeString,
+			ForceNew: true,
+			Optional: true,
+		},
 		"verification": {
 			Type:     schema.TypeString,
 			ForceNew: true,
@@ -200,6 +205,10 @@ func buildConfigReference(raw map[string]interface{}) (*types.Resource, error) {
 	source := raw["source"].(string)
 	if source != "" {
 		r.Source = &source
+	}
+	compression := raw["compression"].(string)
+	if compression != "" {
+		r.Compression = &compression
 	}
 	hash := raw["verification"].(string)
 	if hash != "" {
