@@ -167,11 +167,150 @@ func TestIgnitionFileMergeNoVerification(t *testing.T) {
 		}
 
 		if string(*a[0].Source) != "foo" {
-			return fmt.Errorf("config.replace.source, found %q", *a[0].Source)
+			return fmt.Errorf("config.merge.source, found %q", *a[0].Source)
 		}
 
 		if a[0].Verification.Hash != nil {
 			return fmt.Errorf("verification hash should be nil")
+		}
+
+		return nil
+	})
+}
+
+func TestIgnitionFileReplaceWithHttpHeaders(t *testing.T) {
+	testIgnition(t, `
+		data "ignition_config" "test" {
+			replace {
+				source = "foo"
+				verification = "sha512-0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+				compression = "gzip"
+				http_header {
+					name = "Authorization"
+					value = "Basic YWxhZGRpbjpvcGVuc2VzYW1l"
+				}
+				http_header {
+					name = "Accept"
+					value = "application/json"
+				}
+			}
+		}
+	`, func(c *types.Config) error {
+		r := c.Ignition.Config.Replace
+		if &r == nil {
+			return fmt.Errorf("unable to find replace config")
+		}
+
+		if *r.Source != "foo" {
+			return fmt.Errorf("config.replace.source, found %q", *r.Source)
+		}
+
+		if *r.Verification.Hash != "sha512-0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef" {
+			return fmt.Errorf("config.replace.verification, found %q", *r.Verification.Hash)
+		}
+
+		if *r.Compression != "gzip" {
+			return fmt.Errorf("config.replace.Compression, found %q", *r.Compression)
+		}
+
+		if len(r.HTTPHeaders) != 2 {
+			return fmt.Errorf("Expected 2 HTTPHeaders, got %d", len(r.HTTPHeaders))
+		}
+
+		if r.HTTPHeaders[0].Name != "Authorization" {
+			return fmt.Errorf("config.replace.HTTPHeaders[0].Name, found %q", r.HTTPHeaders[0].Name)
+		}
+
+		if *r.HTTPHeaders[0].Value != "Basic YWxhZGRpbjpvcGVuc2VzYW1l" {
+			return fmt.Errorf("config.replace.HTTPHeaders[0].Value, found %q", *r.HTTPHeaders[0].Value)
+		}
+
+		if r.HTTPHeaders[1].Name != "Accept" {
+			return fmt.Errorf("config.replace.HTTPHeaders[1].Name, found %q", r.HTTPHeaders[1].Name)
+		}
+
+		if *r.HTTPHeaders[1].Value != "application/json" {
+			return fmt.Errorf("config.replace.HTTPHeaders[1].Value, found %q", *r.HTTPHeaders[1].Value)
+		}
+
+		return nil
+	})
+}
+
+func TestIgnitionFileMergeWithHttpHeaders(t *testing.T) {
+	testIgnition(t, `
+		data "ignition_config" "test" {
+			merge {
+				source = "foo"
+				verification = "sha512-0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+				compression = "gzip"
+				http_header {
+					name = "Authorization"
+					value = "Basic YWxhZGRpbjpvcGVuc2VzYW1l"
+				}
+			}
+
+		    merge {
+		    	source = "bar"
+		    	verification = "sha512-1123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+				http_header {
+					name = "Accept"
+					value = "application/json"
+				}
+			}
+		}
+	`, func(c *types.Config) error {
+		a := c.Ignition.Config.Merge
+		if len(a) != 2 {
+			return fmt.Errorf("unable to find merge config, expected 2")
+		}
+
+		if string(*a[0].Source) != "foo" {
+			return fmt.Errorf("config.merge[0].source, found %q", *a[0].Source)
+		}
+
+		if *a[0].Verification.Hash != "sha512-0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef" {
+			return fmt.Errorf("config.merge[0].verification, found %q", *a[0].Verification.Hash)
+		}
+
+		if *a[0].Compression != "gzip" {
+			return fmt.Errorf("config.merge[0].compression, found %q", *a[0].Compression)
+		}
+
+		if string(*a[1].Source) != "bar" {
+			return fmt.Errorf("config.merge[1].source, found %q", *a[1].Source)
+		}
+
+		if *a[1].Verification.Hash != "sha512-1123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef" {
+			return fmt.Errorf("config.merge[1].verification, found %q", *a[1].Verification.Hash)
+		}
+
+		if a[1].Compression != nil {
+			return fmt.Errorf("config.merge[1].compression should be nil, found %q", *a[1].Compression)
+		}
+
+		if len(a[0].HTTPHeaders) != 1 {
+			return fmt.Errorf("config.merge[0].HTTPHeaders should have length 1, got %d", len(a[0].HTTPHeaders))
+		}
+
+		if a[0].HTTPHeaders[0].Name != "Authorization" {
+			return fmt.Errorf("config.merge[0].HTTPHeaders[0].Name, found %q", a[0].HTTPHeaders[0].Name)
+		}
+
+		if *a[0].HTTPHeaders[0].Value != "Basic YWxhZGRpbjpvcGVuc2VzYW1l" {
+			return fmt.Errorf("config.merge[0].HTTPHeaders[0].Value, found %q", *a[0].HTTPHeaders[0].Value)
+		}
+
+		if len(a[1].HTTPHeaders) != 1 {
+			return fmt.Errorf("config.merge[1].HTTPHeaders should have length 1, got %d", len(a[1].HTTPHeaders))
+		}
+
+		if a[1].HTTPHeaders[0].Name != "Accept" {
+			return fmt.Errorf("config.merge[0].HTTPHeaders[1].Name, found %q", a[1].HTTPHeaders[0].Name)
+		}
+
+		if *a[1].HTTPHeaders[0].Value != "application/json" {
+			return fmt.Errorf("config.merge[0].HTTPHeaders[1].Value, found %q", *a[1].HTTPHeaders[0].Value)
 		}
 
 		return nil

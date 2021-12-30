@@ -2,7 +2,6 @@ package ignition
 
 import (
 	"encoding/json"
-
 	"github.com/pkg/errors"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
@@ -22,6 +21,25 @@ var configReferenceResource = &schema.Resource{
 			Type:     schema.TypeString,
 			ForceNew: true,
 			Optional: true,
+		},
+		"http_header": {
+			Type:     schema.TypeList,
+			Optional: true,
+			ForceNew: true,
+			Elem: &schema.Resource{
+				Schema: map[string]*schema.Schema{
+					"name": {
+						Type:     schema.TypeString,
+						Required: true,
+						ForceNew: true,
+					},
+					"value": {
+						Type:     schema.TypeString,
+						Optional: true,
+						ForceNew: true,
+					},
+				},
+			},
 		},
 		"verification": {
 			Type:     schema.TypeString,
@@ -209,6 +227,20 @@ func buildConfigReference(raw map[string]interface{}) (*types.Resource, error) {
 	compression := raw["compression"].(string)
 	if compression != "" {
 		r.Compression = &compression
+	}
+	hh, ok := raw["http_header"].([]interface{})
+	if ok && len(hh) != 0 {
+		for _, h := range hh {
+			v := h.(map[string]interface{})
+			tvalue := v["value"].(string)
+			r.HTTPHeaders = append(
+				r.HTTPHeaders,
+				types.HTTPHeader{
+					Name:  v["name"].(string),
+					Value: &tvalue,
+				},
+			)
+		}
 	}
 	hash := raw["verification"].(string)
 	if hash != "" {
