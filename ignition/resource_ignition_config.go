@@ -2,6 +2,7 @@ package ignition
 
 import (
 	"encoding/json"
+	"fmt"
 	"github.com/pkg/errors"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
@@ -112,6 +113,13 @@ func dataSourceConfig() *schema.Resource {
 				Optional: true,
 				Elem:     configReferenceResource,
 			},
+			"timeouts": {
+				Type:     schema.TypeList,
+				ForceNew: true,
+				Optional: true,
+				MaxItems: 1,
+				Elem:     &schema.Schema{Type: schema.TypeString},
+			},
 			"rendered": {
 				Type:     schema.TypeString,
 				Computed: true,
@@ -215,6 +223,11 @@ func buildIgnition(d *schema.ResourceData) (types.Ignition, error) {
 		}
 	}
 
+	t, ok := d.Get("timeout.0").(map[string]int)
+	if ok {
+		fmt.Println("test", t)
+		//i.Timeouts.HTTPTotal = t
+	}
 	return i, nil
 }
 

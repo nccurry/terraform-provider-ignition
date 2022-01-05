@@ -24,6 +24,7 @@ func Provider() *schema.Provider {
 			"ignition_systemd_unit": dataSourceSystemdUnit(),
 			"ignition_user":         dataSourceUser(),
 			"ignition_group":        dataSourceGroup(),
+			"ignition_timeout":      dataSourceTimeout(),
 		},
 	}
 }
